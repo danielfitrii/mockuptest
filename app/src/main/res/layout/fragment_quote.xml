@@ -2,28 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".QuoteFragment">
 
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/input_fragment"
-        android:name="com.example.mockuptest.InputFragment"
+    <ImageView
+        android:id="@+id/quoteAnimationView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="4:5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+<!--    android:src="@drawable/frame1"-->
+<!--    Once you add your animation drawable-->
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/quote_fragment"
-        android:name="com.example.mockuptest.QuoteFragment"
+    <TextView
+        android:id="@+id/quoteTextView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Your quote will appear here"
+        android:textAlignment="center"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/quoteAnimationView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
