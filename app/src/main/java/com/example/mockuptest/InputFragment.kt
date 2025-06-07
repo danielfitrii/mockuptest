@@ -14,6 +14,8 @@ import android.widget.SeekBar
 class InputFragment : Fragment() {
 
     private var listener: InputListener? = null
+    private var currentQuote: String = ""
+    private var currentFontSize: Int = 16
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,11 +44,26 @@ class InputFragment : Fragment() {
         val seekBar = view.findViewById<SeekBar>(R.id.fontSizeSeekbar)
         val button = view.findViewById<Button>(R.id.applyButton)
 
+        // Load saved values from SharedPreferences
+        val prefs = requireContext().getSharedPreferences("QuotePrefs", Context.MODE_PRIVATE)
+        currentQuote = prefs.getString("quote", "") ?: ""
+        currentFontSize = prefs.getInt("fontSize", 16)
+        editText.setText(currentQuote)
+        seekBar.progress = currentFontSize
+
         button.setOnClickListener {
             val quote = editText.text.toString()
             val size = seekBar.progress
+            currentQuote = quote
+            currentFontSize = size
             Log.d("InputFragment", "Button clicked - Quote: $quote, Size: $size")
             listener?.onQuoteSubmit(quote, size)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("quote", currentQuote)
+        outState.putInt("fontSize", currentFontSize)
     }
 }
