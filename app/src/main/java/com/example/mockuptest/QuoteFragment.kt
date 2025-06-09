@@ -20,7 +20,6 @@ class QuoteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_quote, container, false)
     }
 
@@ -29,18 +28,20 @@ class QuoteFragment : Fragment() {
 
         val imageView = view.findViewById<ImageView>(R.id.quoteAnimationView)
         imageView.setBackgroundResource(R.drawable.animation_list)
-
         frameAnimation = imageView.background as AnimationDrawable
-        
-        // Start animation after the view is laid out
-        imageView.post {
-            frameAnimation.start()
-        }
 
-        // Load saved quote from SharedPreferences
-        val prefs = requireContext().getSharedPreferences("QuotePrefs", Context.MODE_PRIVATE)
-        currentQuote = prefs.getString("quote", "Your quote will appear here")
-        currentFontSize = prefs.getInt("fontSize", 16)
+        imageView.post { frameAnimation.start() }
+
+        // Restore from savedInstanceState if available
+        if (savedInstanceState != null) {
+            currentQuote = savedInstanceState.getString("quote", "Your quote will appear here")
+            currentFontSize = savedInstanceState.getInt("fontSize", 16)
+        } else {
+            // Load from SharedPreferences
+            val prefs = requireContext().getSharedPreferences("QuotePrefs", Context.MODE_PRIVATE)
+            currentQuote = prefs.getString("quote", "Your quote will appear here")
+            currentFontSize = prefs.getInt("fontSize", 16)
+        }
         updateQuote(currentQuote ?: "Your quote will appear here", currentFontSize)
     }
 
@@ -67,7 +68,7 @@ class QuoteFragment : Fragment() {
     fun updateQuote(text: String, size: Int) {
         currentQuote = text
         currentFontSize = size
-        
+
         // Save to SharedPreferences
         val prefs = requireContext().getSharedPreferences("QuotePrefs", Context.MODE_PRIVATE)
         prefs.edit().apply {
@@ -80,5 +81,4 @@ class QuoteFragment : Fragment() {
         quoteView?.text = text
         quoteView?.textSize = size.toFloat()
     }
-
 }
